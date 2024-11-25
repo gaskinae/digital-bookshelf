@@ -100,14 +100,14 @@ async function handleAddBook(event) {
     
     if (!confirmAdd) return; // If the user cancels, do nothing
 
-    // Prompt user for custom metadata (genre, color, date finished)
+    // Prompt user for custom metadata (genre, colour, date finished)
     const genre = prompt("Enter the genre of the book:");
-    const color = prompt("Enter the color of the book:");
+    const colour = prompt("Enter the colour of the book:");
     const dateFinished = prompt("Enter the date you finished reading the book (YYYY-MM-DD):");
 
     // Add the book to Firebase Firestore
     try {
-        await addBookToDatabase(bookData, genre, color, dateFinished);
+        await addBookToDatabase(bookData, genre, colour, dateFinished);
         alert(`${bookData.title} has been added to your bookshelf!`);
     } catch (error) {
         console.error('Error adding book to database:', error);
@@ -116,14 +116,14 @@ async function handleAddBook(event) {
 }
 
 // Function to add book data to Firebase Firestore
-async function addBookToDatabase(bookData, genre, color, dateFinished) {
-    console.log("Adding book to database:", bookData, genre, color, dateFinished);
+async function addBookToDatabase(bookData, genre, colour, dateFinished) {
+    console.log("Adding book to database:", bookData, genre, colour, dateFinished);
     try {
         await db.collection('bookshelf').add({
             title: bookData.title,
             author: bookData.author,
             genre: genre,
-            color: color,
+            colour: colour,
             dateFinished: firebase.firestore.Timestamp.fromDate(new Date(dateFinished)),
             image: bookData.image
         });
