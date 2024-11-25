@@ -3,51 +3,38 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    # Check out the repository
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    # Debugging: Output secret values to ensure they are available
-    - name: Echo secret values for debugging
-      run: |
-        echo "FIREBASE_API_KEY: $FIREBASE_API_KEY"
-        echo "FIREBASE_AUTH_DOMAIN: $FIREBASE_AUTH_DOMAIN"
-        echo "FIREBASE_PROJECT_ID: $FIREBASE_PROJECT_ID"
-        echo "FIREBASE_STORAGE_BUCKET: $FIREBASE_STORAGE_BUCKET"
-        echo "FIREBASE_MESSAGING_SENDER_ID: $FIREBASE_MESSAGING_SENDER_ID"
-        echo "FIREBASE_APP_ID: $FIREBASE_APP_ID"
-        echo "TEST_SECRET: $TEST_SECRET"
+      - name: Set up Firebase configuration
+        run: |
+          echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> $GITHUB_ENV
+          echo "FIREBASE_AUTH_DOMAIN=${{ secrets.FIREBASE_AUTH_DOMAIN }}" >> $GITHUB_ENV
+          echo "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}" >> $GITHUB_ENV
+          echo "FIREBASE_STORAGE_BUCKET=${{ secrets.FIREBASE_STORAGE_BUCKET }}" >> $GITHUB_ENV
+          echo "FIREBASE_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}" >> $GITHUB_ENV
+          echo "FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }}" >> $GITHUB_ENV
+          echo "TEST_SECRET=${{ secrets.TEST_SECRET }}" >> $GITHUB_ENV
 
-    # Replace the secrets in script.js using `sed`
-    - name: Replace secrets in script.js
-      run: |
-        echo "Replacing secrets in script.js..."
-        sed -i "s|%FIREBASE_API_KEY%|$FIREBASE_API_KEY|g" js/script.js
-        sed -i "s|%FIREBASE_AUTH_DOMAIN%|$FIREBASE_AUTH_DOMAIN|g" js/script.js
-        sed -i "s|%FIREBASE_PROJECT_ID%|$FIREBASE_PROJECT_ID|g" js/script.js
-        sed -i "s|%FIREBASE_STORAGE_BUCKET%|$FIREBASE_STORAGE_BUCKET|g" js/script.js
-        sed -i "s|%FIREBASE_MESSAGING_SENDER_ID%|$FIREBASE_MESSAGING_SENDER_ID|g" js/script.js
-        sed -i "s|%FIREBASE_APP_ID%|$FIREBASE_APP_ID|g" js/script.js
-        sed -i "s|%TEST_SECRET%|$TEST_SECRET|g" js/script.js
-        echo "Secrets replaced successfully."
+      - name: Replace secrets in script.js
+        run: |
+          sed -i "s|%FIREBASE_API_KEY%|$FIREBASE_API_KEY|g" js/script.js
+          sed -i "s|%FIREBASE_AUTH_DOMAIN%|$FIREBASE_AUTH_DOMAIN|g" js/script.js
+          sed -i "s|%FIREBASE_PROJECT_ID%|$FIREBASE_PROJECT_ID|g" js/script.js
+          sed -i "s|%FIREBASE_STORAGE_BUCKET%|$FIREBASE_STORAGE_BUCKET|g" js/script.js
+          sed -i "s|%FIREBASE_MESSAGING_SENDER_ID%|$FIREBASE_MESSAGING_SENDER_ID|g" js/script.js
+          sed -i "s|%FIREBASE_APP_ID%|$FIREBASE_APP_ID|g" js/script.js
+          sed -i "s|%TEST_SECRET%|$TEST_SECRET|g" js/script.js
 
-    # Debugging: Output the content of the modified script.js to confirm replacement
-    - name: Output modified script.js for debugging
-      run: |
-        cat js/script.js
-        echo "Script.js content displayed."
-
-    # Deploy to GitHub Pages
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        branch: gh-pages  # The branch to deploy to
-        folder: .  # Deploy the root folder (adjust if your files are in a different folder)
-        token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for deployment
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: main
+          folder: build
