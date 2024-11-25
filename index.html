@@ -10,21 +10,18 @@
     <header>
         <h1>My Digital Bookshelf</h1>
         <div class="search-bar">
-            <input type="text" id="search" placeholder="Search for a book...">
-            <button id="search-btn">Search</button>
+            <input type="text" id="search" placeholder="Search for a book..." />
+            <ul id="search-results"></ul> <!-- For displaying API results -->
         </div>
     </header>
     <main>
         <section class="bookshelf">
+            <!-- Books will be dynamically added here -->
             <p class="placeholder">Your bookshelf is empty. Start adding books!</p>
         </section>
     </main>
-
-    <!-- Firebase App (Core) SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-    <!-- Firebase Firestore SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
-    <!-- Custom JavaScript -->
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>
