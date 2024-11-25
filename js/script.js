@@ -1,3 +1,17 @@
+// Firebase configuration (to be replaced during deployment)
+const firebaseConfig = {
+    apiKey: "%FIREBASE_API_KEY%",
+    authDomain: "%FIREBASE_AUTH_DOMAIN%",
+    projectId: "%FIREBASE_PROJECT_ID%",
+    storageBucket: "%FIREBASE_STORAGE_BUCKET%",
+    messagingSenderId: "%FIREBASE_MESSAGING_SENDER_ID%",
+    appId: "%FIREBASE_APP_ID%"
+};
+
+// Initialise Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 // Wait for the DOM to load
 document.addEventListener('DOMContentLoaded', function() {
     // Event listener for live search as the user types
