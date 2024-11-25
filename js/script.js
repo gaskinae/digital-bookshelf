@@ -1,32 +1,18 @@
 // Wait for the DOM to load
 document.addEventListener('DOMContentLoaded', function() {
-    // Initial placeholder book when the page loads
-    addPlaceholderBook();
-  
-    // Event listener for search button click
-    document.getElementById("search-btn").addEventListener("click", searchBooks);
-    // Event listener for "Enter" key press
-    document.getElementById("search").addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-            searchBooks(); // Trigger search on Enter key press
-        }
-    });
+    // Event listener for live search as the user types
+    document.getElementById("search").addEventListener("input", searchBooks);
 });
-
-// Function to add a placeholder book (useful for testing before dynamic data)
-function addPlaceholderBook() {
-    const bookshelf = document.querySelector('.bookshelf');
-    const book = document.createElement('div');
-    book.className = 'book';
-    book.textContent = 'Sample Book';
-    bookshelf.appendChild(book);
-}
 
 // Function to handle the book search
 async function searchBooks() {
     const query = document.getElementById("search").value;
     const category = document.getElementById("search-category").value; // Get selected category (title or author)
-    if (!query) return; // Prevent search if the input is empty
+
+    if (!query) {
+        document.querySelector('.bookshelf').innerHTML = "<p class='placeholder'>Your bookshelf is empty. Start typing to search for books!</p>";
+        return; // Stop if the input is empty
+    }
 
     const apiUrl = `https://www.googleapis.com/books/v1/volumes?q=${category}:${query}&maxResults=10`;
 
