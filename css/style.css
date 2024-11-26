@@ -58,23 +58,36 @@ h1 {
 }
 
 /* Book Styling */
-.book {
+.book-result {
     background-color: #fff;
     border: 2px solid #ddd;
     border-radius: 5px;
-    padding: 15px;
+    padding: 10px;
     text-align: center;
+    width: 120px; /* Smaller width for books */
+    margin: 10px;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.book:hover {
+.book-thumbnail {
+    width: 80px; /* Smaller image */
+    height: 120px;
+    object-fit: cover;
+}
+
+.book-result:hover {
     transform: scale(1.05);
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.book p {
-    font-size: 1em;
+.book-result h3 {
+    font-size: 1em; /* Smaller title font */
+    margin: 8px 0 5px;
+}
+
+.book-result p {
+    font-size: 0.9em; /* Smaller author font */
     color: #666;
 }
 

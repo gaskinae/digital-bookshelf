@@ -18,6 +18,24 @@
     </header>
     
     <main>
+        <!-- Filters Section -->
+        <section class="filters">
+            <!-- Filter and Sort Options -->
+            <label for="genre">Filter by Genre:</label>
+            <select id="genre">
+                <option value="">All</option>
+                <!-- Populate options dynamically -->
+            </select>
+            
+            <label for="sort">Sort by:</label>
+            <select id="sort">
+                <option value="title">Title</option>
+                <option value="dateFinished">Date Finished</option>
+                <option value="author">Author</option>
+            </select>
+        </section>
+
+        <!-- Bookshelf Section -->
         <section class="bookshelf">
             <!-- Books will be dynamically added here -->
             <p class="placeholder">Your bookshelf is empty. Start adding books!</p>
