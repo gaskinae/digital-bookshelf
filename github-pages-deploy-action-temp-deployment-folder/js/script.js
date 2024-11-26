@@ -1,11 +1,11 @@
-// Firebase configuration (already present)
+// Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyC3M2dFl2RrblpvI5cvSoAcrRLe5ErD1jA",
-    authDomain: "digital-bookshelf-c966e.firebaseapp.com",
-    projectId: "digital-bookshelf-c966e",
-    storageBucket: "digital-bookshelf-c966e.firebasestorage.app",
-    messagingSenderId: "790381060352",
-    appId: "1:790381060352:web:d57b7c2ecda67c70bd13e5",
+    apiKey: "%FIREBASE_API_KEY%",
+    authDomain: "%FIREBASE_AUTH_DOMAIN%",
+    projectId: "%FIREBASE_PROJECT_ID%",
+    storageBucket: "%FIREBASE_STORAGE_BUCKET%",
+    messagingSenderId: "%FIREBASE_MESSAGING_SENDER_ID%",
+    appId: "%FIREBASE_APP_ID%",
     testSecret: "%FIREBASE_TEST"
 };
 
@@ -25,9 +25,6 @@ db.enablePersistence()
 
 // Wait for the DOM to load before running scripts
 document.addEventListener('DOMContentLoaded', function() {
-    // Load books from Firestore on page load
-    loadBookshelf();
-    
     // Event listener for search input (to trigger live search)
     document.getElementById("search").addEventListener("input", searchBooks);
     
@@ -41,7 +38,7 @@ async function searchBooks() {
 
     if (!query) return; // Don't proceed if the search input is empty
 
-    const apiUrl = `https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=3`; // Construct the API URL
+    const apiUrl = `https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=10`; // Construct the API URL
     
     try {
         const response = await fetch(apiUrl);
@@ -113,7 +110,6 @@ async function handleAddBook(event) {
     try {
         await addBookToDatabase(bookData, genre, colour, dateFinished);
         alert(`${bookData.title} has been added to your bookshelf!`);
-        loadBookshelf();  // Reload bookshelf after adding book
     } catch (error) {
         console.error('Error adding book to database:', error);
         alert('There was an error adding the book to your bookshelf.');
@@ -135,73 +131,5 @@ async function addBookToDatabase(bookData, genre, colour, dateFinished) {
         console.log(`${bookData.title} has been added to Firestore!`);
     } catch (error) {
         console.error('Error adding book to Firestore:', error);
-    }
-}
-
-// Fetch books from Firestore and display them on the bookshelf
-async function loadBookshelf() {
-    const bookshelfSection = document.querySelector('.bookshelf');
-    
-    // Clear any existing books
-    bookshelfSection.innerHTML = '';
-
-    try {
-        const querySnapshot = await db.collection('bookshelf').get();
-        querySnapshot.forEach((doc) => {
-            const bookData = doc.data();
-            displayBookOnBookshelf(bookData, doc.id); // Include doc.id for deletion and editing
-        });
-    } catch (error) {
-        console.error('Error loading bookshelf:', error);
-    }
-}
-
-// Display the book on the bookshelf
-function displayBookOnBookshelf(bookData, bookId) {
-    const bookshelfSection = document.querySelector('.bookshelf');
-    const bookElement = document.createElement('div');
-    bookElement.classList.add('book');
-    bookElement.innerHTML = `
-        <img src="${bookData.image}" alt="${bookData.title}" class="book-thumbnail"/>
-        <h3>${bookData.title}</h3>
-        <p>${bookData.author}</p>
-        <button onclick="editBook('${bookId}')">Edit</button>
-        <button onclick="deleteBook('${bookId}')">Delete</button>
-    `;
-    bookshelfSection.appendChild(bookElement);
-}
-
-// Function to delete a book from Firestore
-async function deleteBook(bookId) {
-    const confirmDelete = confirm("Are you sure you want to delete this book from your shelf?");
-    if (!confirmDelete) return;
-
-    try {
-        await db.collection('bookshelf').doc(bookId).delete();
-        alert('Book deleted successfully!');
-        loadBookshelf();  // Reload bookshelf after deleting
-    } catch (error) {
-        console.error('Error deleting book:', error);
-        alert('There was an error deleting the book.');
-    }
-}
-
-// Function to edit a book's metadata (just a prompt for simplicity)
-async function editBook(bookId) {
-    const newGenre = prompt("Enter the new genre:");
-    const newColour = prompt("Enter the new colour:");
-    const newDateFinished = prompt("Enter the new finish date (YYYY-MM-DD):");
-
-    try {
-        await db.collection('bookshelf').doc(bookId).update({
-            genre: newGenre,
-            colour: newColour,
-            dateFinished: firebase.firestore.Timestamp.fromDate(new Date(newDateFinished))
-        });
-        alert('Book updated successfully!');
-        loadBookshelf();  // Reload bookshelf after editing
-    } catch (error) {
-        console.error('Error updating book:', error);
-        alert('There was an error updating the book.');
     }
 }
