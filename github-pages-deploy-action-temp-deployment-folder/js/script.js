@@ -1,11 +1,11 @@
 // Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyC3M2dFl2RrblpvI5cvSoAcrRLe5ErD1jA",
-    authDomain: "digital-bookshelf-c966e.firebaseapp.com",
-    projectId: "digital-bookshelf-c966e",
-    storageBucket: "digital-bookshelf-c966e.firebasestorage.app",
-    messagingSenderId: "790381060352",
-    appId: "1:790381060352:web:d57b7c2ecda67c70bd13e5",
+    apiKey: "%FIREBASE_API_KEY%",
+    authDomain: "%FIREBASE_AUTH_DOMAIN%",
+    projectId: "%FIREBASE_PROJECT_ID%",
+    storageBucket: "%FIREBASE_STORAGE_BUCKET%",
+    messagingSenderId: "%FIREBASE_MESSAGING_SENDER_ID%",
+    appId: "%FIREBASE_APP_ID%",
     testSecret: "%FIREBASE_TEST"
 };
 
